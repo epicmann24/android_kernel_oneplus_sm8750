@@ -193,6 +193,7 @@ static void cpu_hot_register_cdev(struct work_struct *work)
 
 static int cpu_hot_probe(struct platform_device *pdev)
 {
+	return -ENODEV;
 	int ret = 0, cpu = 0;
 	struct device_node *dev_phandle, *subsys_np = NULL;
 	struct device *cpu_dev;
