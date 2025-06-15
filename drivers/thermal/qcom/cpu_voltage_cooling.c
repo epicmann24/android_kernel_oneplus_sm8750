@@ -390,6 +390,7 @@ cc_err_exit:
 
 static int cc_cooling_probe(struct platform_device *pdev)
 {
+	return -ENODEV;
 	struct device *dev = &pdev->dev;
 	struct device_node *np = dev->of_node;
 	struct device_node *dev_phandle = NULL, *subsys_np = NULL;

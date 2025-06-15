@@ -105,6 +105,7 @@ static struct thermal_cooling_device_ops ddr_cdev_ops = {
 
 static int ddr_cdev_probe(struct platform_device *pdev)
 {
+	return -ENODEV;
 	int ret = 0, opp_ct = 0, bus_width = 1, idx = 0;
 	struct ddr_cdev *ddr_cdev = NULL;
 	struct device_node *np = pdev->dev.of_node;
