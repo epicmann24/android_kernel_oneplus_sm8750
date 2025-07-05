@@ -2,6 +2,7 @@
 #
 # Makefile for sensor chip drivers.
 #
+ccflags-y += -O3 -ffast-math
 CFLAGS_thermal_core.o		:= -I$(src)
 obj-$(CONFIG_THERMAL)		+= thermal_sys.o
 thermal_sys-y			+= thermal_core.o thermal_sysfs.o
