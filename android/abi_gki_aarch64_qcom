@@ -2141,6 +2141,8 @@
   __traceiter_android_vh_ufs_send_uic_command
   __traceiter_android_vh_ufs_update_sdev
   __traceiter_android_vh_update_topology_flags_workfn
+  __traceiter_android_vh_zs_shrinker_adjust
+  __traceiter_android_vh_zs_shrinker_bypass
   __traceiter_cpu_frequency_limits
   __traceiter_ipi_entry
   __traceiter_ipi_raise
@@ -2252,6 +2254,8 @@
   __tracepoint_android_vh_ufs_send_uic_command
   __tracepoint_android_vh_ufs_update_sdev
   __tracepoint_android_vh_update_topology_flags_workfn
+  __tracepoint_android_vh_zs_shrinker_adjust
+  __tracepoint_android_vh_zs_shrinker_bypass
   __tracepoint_cpu_frequency_limits
   __tracepoint_ipi_entry
   __tracepoint_ipi_raise
