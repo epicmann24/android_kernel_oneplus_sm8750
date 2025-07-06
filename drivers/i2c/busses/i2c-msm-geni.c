@@ -2588,6 +2588,43 @@ static void gi2c_se_dma_clear_process(struct geni_i2c_dev *gi2c, struct i2c_msg 
 }
 
 /**
+ * gi2c_se_dma_clear_process() - gi2c se dma clean up process
+ * @gi2c: geni i2c structure as a pointer
+ * @msg: i2c_msg structure as a pointer
+ * @rx_dma: dma rx handle
+ * @tx_dma: dma tx handle
+ * @dma_buf: dma buffer
+ *
+ * Return: None
+ */
+static void gi2c_se_dma_clear_process(struct geni_i2c_dev *gi2c, struct i2c_msg *msg,
+				      dma_addr_t rx_dma, dma_addr_t tx_dma, u8 *dma_buf)
+{
+	int timeout;
+
+	if (gi2c->err) {
+		reinit_completion(&gi2c->xfer);
+		if (msg->flags != I2C_M_RD)
+			writel_relaxed(1, gi2c->base + SE_DMA_TX_FSM_RST);
+		else
+			writel_relaxed(1, gi2c->base + SE_DMA_RX_FSM_RST);
+
+		timeout = wait_for_completion_timeout(&gi2c->xfer, HZ);
+		if (!timeout)
+			I2C_LOG_DBG(gi2c->ipcl, false, gi2c->dev,
+				    "%s: FSM Reset failed\n", __func__);
+	}
+
+	if (rx_dma)
+		geni_se_rx_dma_unprep(&gi2c->i2c_rsc, rx_dma, msg->len);
+
+	if (tx_dma)
+		geni_se_tx_dma_unprep(&gi2c->i2c_rsc, tx_dma, msg->len);
+
+	i2c_put_dma_safe_msg_buf(dma_buf, msg, !gi2c->err);
+}
+
+/**
  * geni_i2c_execute_xfer() - Performs non GSI mode data transfer
  * @adap: Master controller handle
  * @msgs[]: i2c_msg structure as a pointer
