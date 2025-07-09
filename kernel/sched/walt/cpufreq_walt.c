@@ -794,7 +794,7 @@ static void waltgov_update_freq(struct waltgov_callback *cb, u64 time,
 
 #if IS_ENABLED(CONFIG_OPLUS_FEATURE_FRAME_BOOST)
 	raw_spin_lock_irqsave(&wg_policy->update_lock, irq_flags);
-	wg_cpu->util = cpu_util_freq_walt(wg_cpu->cpu, &wg_cpu->walt_load, &wg_cpu->reasons);
+	wg_cpu->util = waltgov_get_util(wg_cpu);
 	wg_cpu->flags = flags;
 	wg_policy->flags = flags;
 #else
