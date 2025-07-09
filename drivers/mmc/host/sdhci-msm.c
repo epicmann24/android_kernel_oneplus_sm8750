@@ -2063,15 +2063,6 @@ out:
 	return true;
 }
 
-static int sdhci_msm_set_vmmc(struct mmc_host *mmc)
-{
-	if (IS_ERR(mmc->supply.vmmc))
-		return 0;
-
-	msm_config_vmmc_regulator(mmc, hpm);
-
-	return mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, mmc->ios.vdd);
-}
 static void msm_config_vmmc_regulator(struct mmc_host *mmc, bool hpm)
 {
 	int load;
@@ -2090,6 +2081,17 @@ static void msm_config_vmmc_regulator(struct mmc_host *mmc, bool hpm)
 	regulator_set_load(mmc->supply.vmmc, load);
 }
 
+static int sdhci_msm_set_vmmc(struct sdhci_msm_host *msm_host,
+							  struct mmc_host *mmc, bool hpm)
+{
+	if (IS_ERR(mmc->supply.vmmc))
+		return 0;
+
+	msm_config_vmmc_regulator(mmc, hpm);
+
+	return mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, mmc->ios.vdd);
+}
+
 static void msm_config_vqmmc_regulator(struct mmc_host *mmc, bool hpm)
 {
 	int load;
@@ -2105,9 +2107,6 @@ static void msm_config_vqmmc_regulator(struct mmc_host *mmc, bool hpm)
 
 	regulator_set_load(mmc->supply.vqmmc, load);
 }
-
-static int sdhci_msm_set_vmmc(struct sdhci_msm_host *msm_host,
-			      struct mmc_host *mmc, bool hpm)
 
 static int msm_toggle_vqmmc(struct sdhci_msm_host *msm_host,
 			      struct mmc_host *mmc, bool level)
